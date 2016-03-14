@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <title>C64annotate</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/stylesheets/bootstrap-theme.min.css" rel="stylesheet">
+
+		<!-- QTip -->
+		<link href="/stylesheets/jquery.qtip.min.css" rel="stylesheet">
+
+    <!-- Theme -->
+    <link href="/stylesheets/screen.css" rel="stylesheet">
+    <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if IE]>
+        <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <![endif]-->
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">C64annotate</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container theme-showcase" role="main">
+
+      <div class="row">
+        <div class="col-sm-4">
+					<h3>Paste code here:</h3>
+					<p>
+						<textarea id="input-program" rows="8"></textarea>
+						<button type="button" class="btn btn-sm btn-primary" onClick="doit()">Run</button>
+					</p>
+        </div><!-- /.col-sm-4 -->
+        <div class="col-sm-4">
+					<h3>Instructions:</h3>
+					<p>
+						<ol>
+							<li>Generate a character dump of the program you want to compile with <code>$ xxd -ps c2048.prg</code></li>
+							<li>Copy paste the code into the textarea</li>
+							<li>Load the code into the disassemblre with: <code>App.loadRAM(jQuery('#input-program').val(), 0x801)</code></li>
+							<li>To see the resulting code do: <code>result = App.disassemble(0x812, 0x830);</code></li>
+						</ol>
+					</p>
+        </div><!-- /.col-sm-4 -->
+        <div class="col-sm-4">
+        </div><!-- /.col-sm-4 -->
+      </div>
+		  <div class="row">
+				<div class="col-sm-10" id="output"></div>
+				<div class="col-sm-2"><svg id="mmap"><defs></defs></svg></div>
+			</div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/disassembler.js"></script>
+    <script src="js/disassembler-gbz80.js"></script>
+		<script src="js/annotation-engine.js"></script>
+		<script src="js/jquery.jeditable.js"></script>
+		<script src="js/handlebars-v1.3.0.js"></script>
+		<script src="js/jquery.qtip.min.js"></script>
+		<script src="js/c64systemlabels.js"></script>
+		<script src="js/snap.svg-min.js"></script>
+		<script src="js/mmap.js"></script>
+	  <script>
+			function doit() {
+
+				App.loadRAM(jQuery('#input-program').val(), 0x0000);
+
+				// Add some better labels.
+				var exampleAnotation = {
+					'programFile': 'Mario & Yoshi.gb',
+					'description': 'Sample annotation',
+					'blocks': [
+						// block 1
+						{
+							'type': 'code',	'from': 0x0100, 'to': 0x014f,
+							'comment': "Cartridge information",
+							'comments': [],
+							'labels': []
+						},
+        		// Cartridge ROM Bank 0 - ($0150 - $3fff)
+						{
+							'type': 'code',	'from': 0x0150, 'to': 0x0440,
+							'comment': "Cartridge ROM - Bank 0 fixed",
+							'comments': [
+								{'addr': 0x0150, 'comment': 'Read joy pad info (see pg 36 of GBCPUman.pdf)'},
+							],
+							'labels': [
+								{'addr': 0x0100, 'label': 'Cartridge header area'},
+							]
+						},
+						{
+							'type': 'code',	'from': 0x0441, 'to': 0x0500,
+							'comment': "Cartridge start code",
+							'comments': [ ],
+							'labels': [ ]
+						},
+
+        		// Cartridge ROM Switchable Bank 1 - xx ($4000 - $7fff)
+						{
+							'type': 'code',	'from': 0x4000, 'to': 0x4600,
+							'comment': "Cartridge ROM - Switchable Bank - xx",
+							'comments': [
+								//{'addr': 0x0100, 'comment': 'Start of cartridge code'},
+							],
+							'labels': [
+								//{'addr': 0x0100, 'label': 'Cartridge header area'},
+							]
+						},
+
+					]
+				};
+
+				App.addAnnotations(exampleAnotation);
+
+				// render the block
+				App.render(jQuery('#output'));
+
+				// render memory map
+				//App.drawMap(exampleAnotation, '#mmap');
+
+				// bind editable
+				//jQuery('.editable').editable(function(value, settings) {
+				//		 //console.log(this);
+				//		 //console.log(value);
+				//		 //console.log(settings);
+				//		 return(value);
+				//	}, {
+				//		 type    : 'text',
+				//		 submit  : 'OK',
+				// });
+			}
+	  </script>
+  </body>
+</html>

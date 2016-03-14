@@ -1,0 +1,69 @@
+/* line 1, ../sass/screen.scss */
+#input-program {
+  width: 100%;
+  font-size: 10px;
+}
+
+/* line 18, ../sass/screen.scss */
+.code-block .code-block-comment {
+  padding: 20px;
+  margin: 10px 0;
+  color: #c7254e;
+  border-left: 6px solid #c7254e;
+  width: 600px;
+  float: left;
+  clear: both;
+}
+/* line 27, ../sass/screen.scss */
+.code-block .code-line {
+  font-family: monospace;
+  font-size: 13px;
+  clear: left;
+}
+/* line 31, ../sass/screen.scss */
+.code-block .code-line .address {
+  color: #dd3300;
+  float: left;
+  min-width: 50px;
+}
+/* line 36, ../sass/screen.scss */
+.code-block .code-line .opcodes {
+  color: #888888;
+  float: left;
+  min-width: 80px;
+}
+/* line 41, ../sass/screen.scss */
+.code-block .code-line .code-label {
+  color: #aaaaaa;
+  float: left;
+  min-width: 120px;
+}
+/* line 46, ../sass/screen.scss */
+.code-block .code-line .instr {
+  font-weight: bold;
+  float: left;
+  min-width: 50px;
+  color: black;
+}
+/* line 52, ../sass/screen.scss */
+.code-block .code-line .additional {
+  float: left;
+  min-width: 90px;
+}
+/* line 56, ../sass/screen.scss */
+.code-block .code-line .comment {
+  font-family: "sans-serif";
+  color: #c7254e;
+  float: left;
+  width: 400px;
+  font-size: 14px;
+}
+/* line 65, ../sass/screen.scss */
+.code-block .code-line:hover div {
+  background: #eee;
+}
+
+/* line 71, ../sass/screen.scss */
+.tooltiptext {
+  display: none;
+}

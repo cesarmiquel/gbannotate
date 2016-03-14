@@ -1,0 +1,73 @@
+#input-program {
+  width: 100%;
+	font-size: 10px;
+}
+
+// variables
+$code-font: 'monospace';
+$code-comment-font: 'sans-serif';
+$code-color: #950;
+$code-address-color: #d30;
+$code-opcode-color: #888;
+$code-label-color: #aaa;
+$code-instr-color: #000;
+$code-comment-color: #c7254e;
+
+// code format
+.code-block {
+	.code-block-comment {
+		padding: 20px;
+		margin: 10px 0;
+		color: $code-comment-color;
+		border-left: 6px solid $code-comment-color;
+		width: 600px;
+		float: left;
+		clear: both;
+	}	
+	.code-line {
+		font-family: monospace;
+		font-size: 13px;
+		clear: left;
+		.address {
+			color: $code-address-color;
+			float: left;
+			min-width: 50px;
+		}
+		.opcodes {
+			color: $code-opcode-color;
+			float: left;
+			min-width: 80px;
+		}
+		.code-label {
+			color: $code-label-color;
+			float: left;
+			min-width: 120px;
+		}
+		.instr {
+			font-weight: bold;
+			float: left;
+			min-width: 50px;
+			color: $code-instr-color;
+		}
+		.additional {
+			float: left;
+		  min-width: 90px;
+		}
+		.comment {
+			font-family: $code-comment-font;
+			color: $code-comment-color;
+			float: left;
+			width: 400px;
+			font-size: 14px;
+		}
+	}
+	.code-line:hover {
+		div {
+			background: #eee;
+		}
+	}
+}
+
+.tooltiptext {
+	display: none;
+}
