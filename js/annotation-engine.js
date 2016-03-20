@@ -57,6 +57,10 @@ var App = (function (my, $) {
 					}
 				}
 			}
+      else if (block.type == 'gameboy_rom_header') {
+        var gb_header = my.parseGBRomHeader();
+        my.addBlock(gb_header);
+      }
 		}
 	}
 
@@ -64,7 +68,7 @@ var App = (function (my, $) {
 		var html = '';
 		var e = jQuery(element);
 		for(var i = 0; i < annotatedBlocks.length; i++) {
-			html += renderBlock(annotatedBlocks[i]);
+			html += my.renderBlock(annotatedBlocks[i]);
 		}
 		element.html(html);
 		
@@ -83,7 +87,7 @@ var App = (function (my, $) {
     return '' + hextab[Math.floor(v / 0x1000)] + hextab[Math.floor((v & 0x0f00) / 256)] + hextab[Math.floor((v & 0xf0) / 16)] + hextab[v & 0x000f];
   }
 	
-	function renderCodeLine(line) {
+	my.renderCodeLine = function(line) {
 
 		// code template and helper
 		var srcTpl = '<div class="code-line" data-addr="{{line.addr}}">' +
@@ -159,16 +163,19 @@ var App = (function (my, $) {
 	
 			replaceAddresses(line);
 			
-			html += renderCodeLine(line);
+			html += my.renderCodeLine(line);
 		}
 		html += '</div>';
 		return html + "\n";
 	}
 
-	function renderBlock(block) {
+	my.renderBlock = function(block) {
 		var html = '';
 		if (block.type && block.type == 'code') {
 			html += renderCodeBlock(block);
+		}
+		else if (block.type && block.type == 'gameboy_rom_header') {
+			html += my.renderGBRomHeaderBlock(block);
 		}
 		return html;
 	}

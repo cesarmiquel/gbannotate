@@ -110,6 +110,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/disassembler.js"></script>
     <script src="js/disassembler-gbz80.js"></script>
+    <script src="js/gameboy.js"></script>
 		<script src="js/annotation-engine.js"></script>
 		<script src="js/jquery.jeditable.js"></script>
 		<script src="js/handlebars-v1.3.0.js"></script>
@@ -121,6 +122,35 @@
 			function doit() {
 
 				App.loadRAM(jQuery('#input-program').val(), 0x0000);
+
+        // Demo in my Pocket annotations
+        var pocketDemoAnnotations = {
+					'programFile': 'Is That a Demo in Your Pocket?',
+					'description': 'Is That a Demo in Your Pocket? by Snorpun',
+          'blocks': [
+						// block - Code at 0xe5
+						{
+							'type': 'code',	'from': 0x0061, 'to': 0x00ec,
+							'comment': "Common routines",
+							'comments': [
+              {'addr': 0x00e5, 'comment': 'Wait until the processor has finished showing the screen.<br/>Retrieve vertical line display is showing'},
+              {'addr': 0x00e9, 'comment': 'Wait until we are in the V-blank period'},
+              ],
+							'labels': []
+						},
+						// block - Cartridge header
+						{
+							'type': 'gameboy_rom_header',
+						},
+						// block - a little code 0x150 - 0x400
+						{
+							'type': 'code',	'from': 0x0150, 'to': 0x0400,
+							'comment': "Main entry point of Demo",
+							'comments': [],
+							'labels': []
+						}
+          ]
+        };
 
 				// Add some better labels.
 				var exampleAnotation = {
@@ -167,7 +197,7 @@
 					]
 				};
 
-				App.addAnnotations(exampleAnotation);
+				App.addAnnotations(pocketDemoAnnotations);
 
 				// render the block
 				App.render(jQuery('#output'));

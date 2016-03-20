@@ -80,6 +80,31 @@ var App = (function (my, $) {
     return '' + hextab[Math.floor(v / 0x1000)] + hextab[Math.floor((v & 0x0f00) / 256)] + hextab[Math.floor((v & 0xf0) / 16)] + hextab[v & 0x000f];
   }
 
+  my.disassembleData = function(from, to) {
+    // @TODO validate from < to
+    my.pc = from;
+    var lines = [];
+    var addr  = my.pc;
+    var lineData;
+    var byte;
+    var instr = '';
+    while(addr < to) {
+      lineData = {'addr': addr, 'ops': '', 'instr': ''};
+      for(i = 0; i < 16 && addr < to; i++) {
+        byte = my.ByteAt(addr);
+        instr = my.getHexByte(byte).toLowerCase();
+        lineData.ops += instr + ' ';
+        lineData.instr += (byte < 32 || byte > 127) ? '.' : String.fromCharCode(byte);
+        addr++;
+      }
+      lineData.ops = lineData.ops.trim();
+      lines.push(lineData);
+    }
+
+    my.pc = addr;
+    return lines;
+  }
+
   return my;
 
 }(App || {}, jQuery));
