@@ -130,13 +130,30 @@
           'blocks': [
 						// block - Code at 0xe5
 						{
-							'type': 'code',	'from': 0x0061, 'to': 0x00ec,
+							'type': 'code',	'from': 0x0061, 'to': 0x006f,
+							'comment': "Routine 01",
+							'comments': [],
+							'labels': [
+                {'addr': 0x0061, 'label': 'ROUTINE_01'}
+              ]
+						},
+						{
+							'type': 'code',	'from': 0x0070, 'to': 0x00e4,
 							'comment': "Common routines",
 							'comments': [
-              {'addr': 0x00e5, 'comment': 'Wait until the processor has finished showing the screen.<br/>Retrieve vertical line display is showing'},
-              {'addr': 0x00e9, 'comment': 'Wait until we are in the V-blank period'},
               ],
 							'labels': []
+						},
+						{
+							'type': 'code',	'from': 0x00e5, 'to': 0x00eb,
+							'comment': "Wait until the processor has finished showing the screen.",
+							'comments': [
+                {'addr': 0x00e5, 'comment': 'Retrieve vertical line display is showing'},
+                {'addr': 0x00e9, 'comment': 'Wait until we are in the V-blank period'},
+              ],
+							'labels': [
+                {'addr': 0x00e5, 'label': 'WAIT_VBLANK'},
+              ]
 						},
 						// block - Cartridge header
 						{
