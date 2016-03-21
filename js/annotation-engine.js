@@ -112,9 +112,10 @@ var App = (function (my, $) {
 	function replaceAddresses(line) {
 		// single address line
 		var regexpList = [
-			/^\$([0-9A-F]{4})$/,
-			/^\$([0-9A-F]{4},X)$/,
-			/^\$([0-9A-F]{4},Y)$/
+			/^\$([0-9A-F]{4})$/i,
+			/^\$([0-9A-F]{4},X)$/i,
+			/^\$([0-9A-F]{4},Y)$/i,
+			/^NZ, \$([0-9A-F]{4})$/i
 		];
 
 		var args = line.disas.trim();
