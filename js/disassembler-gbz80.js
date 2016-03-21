@@ -526,7 +526,7 @@ var App = (function (my, $) {
     var code = [];
 
     my.pc = inputStartAddr;
-    while (my.pc < inputStopAddr && my.pc < my.endAddr) {
+    while (my.pc <= inputStopAddr && my.pc <= my.endAddr) {
       line = disassembleStep();
       code.push(line);
     }
