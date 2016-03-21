@@ -62,6 +62,7 @@ var App = (function (my, $) {
       (hdr.isColorGBData == 0x80 ? 'Yes' : 'No') +
       ' (' + my.getHexByte(hdr.isColorGBData) + ')<br/>';
 
+    // Cartridge type
     var cartridgeTypes = {
       0x00: 'ROM Only',
       0x01: 'ROM + MBC1',
@@ -92,6 +93,33 @@ var App = (function (my, $) {
     var cartridgeTypeText = cartridgeTypes[hdr.cartridgeType] || 'Unknown';
     comment += '<strong>Cartridge type:</strong> ' + cartridgeTypeText + ' (' + my.getHexByte(hdr.cartridgeType) + ')<br/>';
 
+    // ROM size
+    var romSizes = {
+      0x00: '256kBit = 32kB  =   2 banks',
+      0x01: '512kBit = 64kB  =   4 banks',
+      0x02: '  1MBit = 128kB =   8 banks',
+      0x03: '  2MBit = 256kB =  16 banks',
+      0x04: '  4MBit = 512kB =  32 banks',
+      0x05: '  8MBit =   1MB =  64 banks',
+      0x06: ' 16MBit =   2MB = 128 banks',
+      0x52: '  9MBit = 1.1MB =  72 banks',
+      0x53: ' 10MBit = 1.2MB =  80 banks',
+      0x54: ' 12MBit = 1.5MB =  96 banks',
+    };
+    var romSizeText = romSizes[hdr.romSize] || 'Unknown';
+    comment += '<strong>ROM Size:</strong> ' + romSizeText + ' (' + my.getHexByte(hdr.romSize) + ')<br/>';
+
+    // RAM size
+    var ramSizes = {
+      0x00: 'None',
+      0x01: ' 16kBit = 2kB   = 1 bank',
+      0x02: ' 64kBit = 8kB   = 1 bank',
+      0x03: '256kBit = 32kB  = 4 bank',
+      0x04: '  1MBit = 128kB = 16 bank',
+    };
+    var ramSizeText = ramSizes[hdr.ramSize] || 'Unknown';
+    comment += '<strong>RAM Size:</strong> ' + ramSizeText + ' (' + my.getHexByte(hdr.ramSize) + ')<br/>';
+
     // startup code
     comment += '<strong>Startup code:</strong> ';
 
@@ -109,6 +137,10 @@ var App = (function (my, $) {
 		html += '</div>';
 		return html + "\n";
   }
+
+  //
+  // Codigo obtenido de aca: http://mrcoles.com/blog/making-images-byte-by-byte-javascript/
+  //
 
   // Helper code to render sprits
   function _asLittleEndianHex(value, bytes) {
