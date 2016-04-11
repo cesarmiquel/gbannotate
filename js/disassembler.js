@@ -1,5 +1,5 @@
 //
-// 6502 disassembler
+// Inspired by
 // n. landsteiner, mass:werk / electronic tradion 2005; e-tradion.net
 // http://www.masswerk.at/6502/disassembler.html
 //

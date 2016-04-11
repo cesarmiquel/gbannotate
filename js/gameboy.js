@@ -4,6 +4,70 @@
 
 var App = (function (my, $) {
 
+  my.ROM = [];
+  my.currentBank = 1;
+
+	// Load ROM with the provided data
+	//
+	// Parameters:
+	// -----------
+	// data      String with hex representation of code
+	//
+  my.loadROM = function(data) {
+    my.ROM = [];
+
+    var addr = 0;
+
+    var lc = '';
+    var ofs = 0;
+    var mode = 1;
+    data = data.toUpperCase();
+    for (var i = 0; i < data.length; i++) {
+      var c = data.charAt(i);
+      if (mode == 2) {
+        if ((c == '\r') || (c == '\n')) {
+          mode = 1;
+        }
+      } else if (((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'F'))) {
+        if (mode == 1) {
+          if (lc) {
+            my.ROM[addr++] = parseInt(lc + c, 16);
+            lc = '';
+          } else {
+            lc = c;
+          }
+        }
+      } else if (c == ':') {
+        mode = 0;
+      } else if (c == ';') {
+        mode = 2;
+      } else {
+        mode = 1;
+      }
+    }
+
+    // Load bank 0 and 1
+    my.loadBank(0);
+    my.loadBank(1);
+
+    my.startAddress = 0;
+    my.endAddr = 0xffff;
+
+    // Load default known labels
+    loadGameboyLabels();
+
+    return addr;
+  }
+
+  // banknum = 0, 1, 2, 3 ...
+  my.loadBank = function(bankNum) {
+    var startAddress = bankNum * 0x4000;
+    var ramStartAddress = (bankNum == 0) ? 0 : 0x4000;
+    for(i = 0; i < 0x4000; i++) {
+      my.RAM[ ramStartAddress + i ] = my.ROM[startAddress + i];
+    }
+  }
+
   my.parseGBRomHeader = function() {
 
     var gameboyHeader = {};
@@ -256,6 +320,100 @@ var App = (function (my, $) {
              );
 
       return 'data:image/bmp;base64,' + btoa(file);
+  }
+
+  function loadGameboyLabels() {
+    var knownLocations = [
+      {'addr': 0xff05, 'label': 'TIMA'},
+      {'addr': 0xff06, 'label': 'TMA'},
+      {'addr': 0xff07, 'label': 'TAC'},
+      {'addr': 0xff10, 'label': 'NR10'},
+      {'addr': 0xff11, 'label': 'NR11'},
+      {'addr': 0xff12, 'label': 'NR12'},
+      {'addr': 0xff14, 'label': 'NR14'},
+      {'addr': 0xff16, 'label': 'NR21'},
+      {'addr': 0xff17, 'label': 'NR22'},
+      {'addr': 0xff19, 'label': 'NR24'},
+      {'addr': 0xff1a, 'label': 'NR30'},
+      {'addr': 0xff1b, 'label': 'NR31'},
+      {'addr': 0xff1c, 'label': 'NR32'},
+      {'addr': 0xff1e, 'label': 'NR33'},
+      {'addr': 0xff20, 'label': 'NR41'},
+      {'addr': 0xff21, 'label': 'NR42'},
+      {'addr': 0xff22, 'label': 'NR43'},
+      {'addr': 0xff23, 'label': 'NR30'},
+      {'addr': 0xff24, 'label': 'NR50'},
+      {'addr': 0xff25, 'label': 'NR51'},
+      {'addr': 0xff40, 'label': 
+        {
+          'name': 'LCDC', 
+          'help': "<strong>0xff40 - LCD Control (R/W)</strong><br/>" +
+            "Bit 7 - LCD Control Operation (*)<br/>" +
+            "&nbsp;0: Stop completely (no picture on screen)<br/>" +
+            "&nbsp;1: operation<br/>" +
+            "Bit 6 - Window Tile Map Display Select<br/>" +
+            "&nbsp;0: $9800-$9BFF<br/>" +
+            "&nbsp;1: $9C00-$9FFF<br/>" +
+            "Bit 5 - Window Display<br/>" +
+            "&nbsp;0: off<br/>" +
+            "&nbsp;1: on<br/>" +
+            "Bit 4 - BG & Window Tile Data Select<br/>" +
+            "&nbsp;0: $8800-$97FF<br/>" +
+            "&nbsp;1: $8000-$8FFF <- Same area as OBJ<br/>" +
+            "Bit 3 - BG Tile Map Display Select<br/>" +
+            "&nbsp;0: $9800-$9BFF<br/>" +
+            "&nbsp;1: $9C00-$9FFF<br/>" +
+            "Bit 2 - OBJ (Sprite) Size<br/>" +
+            "&nbsp;0: 8*8<br/>" +
+            "&nbsp;1: 8*16 (width*height)<br/>" +
+            "Bit 1 - OBJ (Sprite) Display<br/>" +
+            "&nbsp;0: off<br/>" +
+            "&nbsp;1: on<br/>" +
+            "Bit 0 - BG & Window Display<br/>" +
+            "&nbsp;0: off<br/>" +
+            "&nbsp;1: on<br/>" +
+            "* - Stopping LCD operation (bit 7 from 1 to 0) must<br/>" +
+            "be performed during V-blank to work properly. V-<br/>" +
+            "blank can be confirmed when the value of LY is<br/>" +
+            "greater than or equal to 144."}
+      },
+      {'addr': 0xff41, 'label':
+        {'name': 'STAT',
+         'help': '<strong>0xff41 - LCD Status register</strong><br>Bit 6 - LYC=LY Coincidence (Selectable)<br>' +
+           'Bit 5 - Mode 10<br>' +
+           'Bit 4 - Mode 01<br>' +
+           'Bit 3 - Mode 00<br>' +
+           '&nbsp;0: Non Selection<br>' +
+           '&nbsp;1: Selection<br>' +
+           'Bit 2 - Coincidence Flag<br>' +
+           '&nbsp;0: LYC not equal to LCDC LY<br>' +
+           '&nbsp;1: LYC = LCDC LY<br>' +
+           'Bit 1-0 - Mode Flag<br>' +
+           '&nbsp;00: During H-Blank<br>' +
+           '&nbsp;01: During V-Blank<br>' +
+           '&nbsp;10: During Searching OAM-RAM<br>' +
+           '&nbsp;11: During Transfering Data to<br>' +
+           'LCD Driver'
+        }
+      },
+      {'addr': 0xff42, 'label': 'SCY'},
+      {'addr': 0xff43, 'label': 'SCX'},
+      {'addr': 0xff44, 'label': 'LY'},
+      {'addr': 0xff45, 'label': 'LYC'},
+      {'addr': 0xff46, 'label': 'DMA'},
+      {'addr': 0xff47, 'label': {'name': 'BGP', 'help': '<strong>0xff47 - BG & Window Palette Data</strong>'}},
+      {'addr': 0xff48, 'label': 'OBP0'},
+      {'addr': 0xff49, 'label': 'OBP1'},
+      {'addr': 0xff4a, 'label': 'WY'},
+      {'addr': 0xff4b, 'label': 'WX'},
+      {'addr': 0xffff, 'label': 'IE'}
+    ];
+
+    for(i = 0; i < knownLocations.length; i++) {
+      var location = knownLocations[i];
+      my.addLabel(location.addr, location.label);
+    }
+
   }
 
   return my;

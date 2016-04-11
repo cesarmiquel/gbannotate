@@ -62,6 +62,12 @@ var App = (function (my, $) {
         my.addBlock(gb_header);
       }
 		}
+
+    if (annotation.labels != undefined) {
+		  for(var i = 0; i < annotation.labels.length; i++) {
+        my.addLabel(annotation.labels[i].addr, annotation.labels[i].label);
+      }
+    }
 	}
 
 	my.render = function(element) {
@@ -112,10 +118,7 @@ var App = (function (my, $) {
 	function replaceAddresses(line) {
 		// single address line
 		var regexpList = [
-			/^\$([0-9A-F]{4})$/i,
-			/^\$([0-9A-F]{4},X)$/i,
-			/^\$([0-9A-F]{4},Y)$/i,
-			/^NZ, \$([0-9A-F]{4})$/i
+			/\$([0-9A-F]{4})/i,
 		];
 
 		var args = line.disas.trim();
@@ -131,6 +134,10 @@ var App = (function (my, $) {
 						labelHelp = newLabel.help;
 						newLabel  = newLabel.name;
 					}
+          else {
+            // Provide a default tooltip text
+					  labelHelp = '0x' + found[1] + ': ' + newLabel;
+          }
 					line.disas = line.disas.replace(
 						'$' + found[1],
 						'$<a href="#">' + newLabel + '</a>'

@@ -518,10 +518,6 @@ var App = (function (my, $) {
   // stopAddr  :     dissasemble to (hex)
   my.disassemble = function(inputStartAddr, inputStopAddr) {
 
-    // safety checks
-    inputStartAddr = inputStartAddr & 0xffff;
-    inputStopAddr  = inputStopAddr & 0xffff;
-
     // disassemble
     var code = [];
 
@@ -564,7 +560,7 @@ var App = (function (my, $) {
     }
     else {
       // Unknown opcode - @TODO FINISH!!
-      my.pc = (my.pc + 1) & 0xffff;
+      my.pc = (my.pc + 1);
       return {
         'addr': addr,
         'ops': '',
@@ -600,7 +596,6 @@ var App = (function (my, $) {
       } else {
         targ += opv;
       }
-      targ &= 0xffff;
       var jump_address = '$' + my.getHexWord(targ);
 
       disas = disas.replace('r8', '$' + jump_address);
@@ -615,7 +610,7 @@ var App = (function (my, $) {
     disas = disas.replace('+', ' + ');
 
     // Increase PC for next operation
-    my.pc = (my.pc + step + 1) & 0xffff;
+    my.pc = (my.pc + step + 1);
 
     return {
       'addr': addr,
