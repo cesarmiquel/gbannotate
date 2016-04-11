@@ -162,11 +162,22 @@ var App = (function (my, $) {
 		if (comment) {
 		}
 		html += '<div class="code-block-comment">' + comment + '</div>';
-		
+
 		for(var i = 0; i < block.code.length; i++) {
 			var line = block.code[i];
+
+      line.comment = '';
+      if (comments[line.addr] != undefined) {
+        if (typeof comments[line.addr] == 'string') {
+			    line.comment = comments[line.addr];
+        }
+        else {
+          // full line string
+          var c = comments[line.addr];
+		      html += '<div class="code-block-comment">' + c.comment + '</div>';
+        }
+      }
 			
-			line.comment = comments[line.addr] ? comments[line.addr] : '';
 			line.label   = labels[line.addr]   ? labels[line.addr]   : '';
 	
 			replaceAddresses(line);
