@@ -355,6 +355,10 @@ var App = (function (my, $) {
 
   function loadGameboyLabels() {
     var knownLocations = [
+      {'addr': 0x8000, 'label': 'TILEDAT1'},
+      {'addr': 0x8800, 'label': 'TILEDAT2'},
+      {'addr': 0x9800, 'label': 'TILEMAP1'},
+      {'addr': 0x9c00, 'label': 'TILEMAP2'},
       {'addr': 0xff05, 'label': 'TIMA'},
       {'addr': 0xff06, 'label': 'TMA'},
       {'addr': 0xff07, 'label': 'TAC'},

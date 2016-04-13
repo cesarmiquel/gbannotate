@@ -172,9 +172,8 @@ var App = (function (my, $) {
 
 		// Add a header to the top.
 		comment = block.comment ? block.comment : '';
-		if (comment) {
-		}
-		html += '<div class="code-block-comment">' + comment + '</div>';
+    link = '<a href="#" class="colapse-button" ><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>';
+		html += '<div class="code-block-comment">' + comment + link + '</div>';
 
 		for(var i = 0; i < block.code.length; i++) {
 			var line = block.code[i];
