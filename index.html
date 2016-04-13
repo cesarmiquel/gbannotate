@@ -22,6 +22,14 @@
     <link href="/stylesheets/screen.css" rel="stylesheet">
     <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
 
+    <style>
+      .colapse-button {
+        display: block;
+        float: right;
+        clear: both;
+       }
+    </style>
+
   </head>
 
   <body role="document">
@@ -62,8 +70,7 @@
 
     <div class="container theme-showcase" role="main">
 		  <div class="row">
-				<div class="col-sm-10" id="output"></div>
-				<div class="col-sm-2"><svg id="mmap"><defs></defs></svg></div>
+				<div class="col-sm-12" id="output"></div>
 			</div>
 
     </div> <!-- /container -->
@@ -90,6 +97,13 @@
         App.loadAnnotationFromUrl("/roms/oh.json", function() {
           // render the block
           App.render(jQuery('#output'));
+
+          // hide all code initially
+          //jQuery('.code-line').hide();
+
+          jQuery('.colapse-button').click( function() {
+            jQuery(this).parents('.code-block').find('.code-line').toggle();
+          });
 
         });
 
