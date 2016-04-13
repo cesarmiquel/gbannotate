@@ -1,0 +1,100 @@
+{
+	"programFile": "Oh!",
+	"rom_url": "/roms/oh.gb",
+	"description": "Oh! by Snorpun, http://www.pouet.net/prod.php?which=54175",
+	"blocks": [
+    {
+      "type": "code", "from": "0x0061", "to": "0x006f",
+      "comment": "<strong>Copy routine</strong><p>Copy BC bytes from memory pointed by HL into memory pointed by DE.</p>",
+      "comments": [],
+      "labels": [{
+        "addr": "0x0061",
+        "label": "COPYHLDE"
+      }]
+    },
+    {
+      "type": "code", "from": "0x0070", "to": "0x00e4",
+      "comment": "Common routines",
+      "comments": [],
+      "labels": []
+    },
+    {
+      "type": "gameboy_rom_header"
+    },
+    {
+      "type": "code", "from": "0x0150", "to": "0x0400",
+      "comment": "Main entry point of Demo",
+      "comments": [{
+        "addr": "0x3c6",
+        "comment": "Copy DMA transfer routine to $fff0"
+      }],
+      "labels": []
+    },
+    {
+      "type": "code", "from": "0x3c7c", "to": "0x3fd3",
+      "comment": "<strong>End credits</strong><br><p>This is the end credits scrolling routine.</p>",
+      "comments": [
+        { "addr": "0x3d36", "comment": { "comment": "Main scrolling loop" } },
+        { "addr": "0x3dae", "comment": "Copy DMA transfer routine to $fff0" },
+        { "addr": "0x3da4", "comment": "Switch to ROM bank 1" },
+        { "addr": "0x3dae", "comment": "Add 2 to x coordinate of all sprites" },
+        { "addr": "0x3e71", "comment": "Subtstract 3 to x coordinate bg plane 1" },
+        { "addr": "0x3e7b", "comment": "Wait for scan line 0x17" },
+        { "addr": "0x3e82", "comment": "Save SCX and SCY in stack" },
+        { "addr": "0x3e89", "comment": "Wait for display to complete HBlank (mode 0)" },
+        { "addr": "0x3e8f", "comment": "Switch tile map select to $9c00 for credit part" },
+        { "addr": "0x3e93", "comment": "Set SCX and SCY for credit window" },
+        { "addr": "0x3eac", "comment": "Wait for display to complete HBlank (mode 0)" },
+        { "addr": "0x3ebd", "comment": "Wait for display to be on line 0x19" },
+        { "addr": "0x3ed4", "comment": "Wait for scan line 0x45 (displays credits section)" },
+        { "addr": "0x3edb", "comment": "Wait for display to complete HBlank (mode 0)" },
+        { "addr": "0x3f03", "comment": "Wait for display to be on line 0x47" },
+        { "addr": "0x3f03", "comment": "Restore into HL the SCX/SCY values for mountain location" },
+        { "addr": "0x3f0f", "comment": "Switch tile map select to $9000 for mountain part" },
+        { "addr": "0x3f2b", "comment": "Wait for scan line 0x5f (displays credits section)" },
+        { "addr": "0x3f63", "comment": "Load music code from bank 3 and play"}
+      ],
+      "labels": []
+    }
+  ],
+	"labels": [{
+		"addr": "0x3d36",
+		"label": "CREDIT_LOOP"
+	}, {
+		"addr": "0xffd1",
+		"label": {
+			"name": "BG_X_01",
+			"help": "0xffd1: X position of bg plane 1"
+		}
+	}, {
+		"addr": "0xffd2",
+		"label": {
+			"name": "BG_X_02",
+			"help": "0xffd2: X position of bg plane 2"
+		}
+	}, {
+		"addr": "0xffd3",
+		"label": {
+			"name": "BG_X_03",
+			"help": "0xffd3: X position of bg plane 3"
+		}
+	}, {
+		"addr": "0xffd8",
+		"label": {
+			"name": "CREDIT_Y",
+			"help": "0xffd8: Y position of credit window1"
+		}
+	}, {
+		"addr": "0xff97",
+		"label": {
+			"name": "CURBANK",
+			"help": "0xff97: Stores the currently loaded bank"
+		}
+	}, {
+		"addr": "0xfff0",
+		"label": {
+			"name": "DMA_TRANSFER",
+			"help": "0xfff0: transfers address $c900 to OAM via DMA"
+		}
+	}]
+}

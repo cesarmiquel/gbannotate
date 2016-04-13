@@ -59,7 +59,7 @@ var App = (function (my, $) {
     return addr;
   }
 
-  my.loadROMWithUrl = function(url) {
+  my.loadROMWithUrl = function(url, callback) {
     var content, newContent = "";
 
       $.ajax({
@@ -81,6 +81,9 @@ var App = (function (my, $) {
 
           // Load default known labels
           loadGameboyLabels();
+
+          // call callback
+          callback();
 
           return addr;
         }

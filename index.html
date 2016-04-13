@@ -21,18 +21,7 @@
     <!-- Theme -->
     <link href="/stylesheets/screen.css" rel="stylesheet">
     <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
-    <!--[if IE]>
-        <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
-    <![endif]-->
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
 
   <body role="document">
@@ -72,29 +61,6 @@
     </div>
 
     <div class="container theme-showcase" role="main">
-
-      <div class="row">
-        <div class="col-sm-4">
-					<h3>Paste code here:</h3>
-					<p>
-						<textarea id="input-program" rows="8"></textarea>
-						<button type="button" class="btn btn-sm btn-primary" onClick="doit()">Run</button>
-					</p>
-        </div><!-- /.col-sm-4 -->
-        <div class="col-sm-4">
-					<h3>Instructions:</h3>
-					<p>
-						<ol>
-							<li>Generate a character dump of the program you want to compile with <code>$ xxd -ps c2048.prg</code></li>
-							<li>Copy paste the code into the textarea</li>
-							<li>Load the code into the disassemblre with: <code>App.loadROM(jQuery('#input-program').val(), 0x801)</code></li>
-							<li>To see the resulting code do: <code>result = App.disassemble(0x812, 0x830);</code></li>
-						</ol>
-					</p>
-        </div><!-- /.col-sm-4 -->
-        <div class="col-sm-4">
-        </div><!-- /.col-sm-4 -->
-      </div>
 		  <div class="row">
 				<div class="col-sm-10" id="output"></div>
 				<div class="col-sm-2"><svg id="mmap"><defs></defs></svg></div>
@@ -119,196 +85,15 @@
 		<script src="js/snap.svg-min.js"></script>
 		<script src="js/mmap.js"></script>
 	  <script>
-			function doit() {
+      jQuery(document).ready(function() {
 
-        App.loadROMWithUrl("/roms/oh.gb");
-				//App.loadROM(jQuery('#input-program').val(), 0x0000);
+        App.loadAnnotationFromUrl("/roms/oh.json", function() {
+          // render the block
+          App.render(jQuery('#output'));
 
-        // Demo in my Pocket annotations
-        var pocketDemoAnnotations = {
-					'programFile': 'Is That a Demo in Your Pocket?',
-					'description': 'Is That a Demo in Your Pocket? by Snorpun',
-          'blocks': [
-						// block - Code at 0xe5
-						{
-							'type': 'code',	'from': 0x0061, 'to': 0x006f,
-              'comment': "<strong>Copy routine</strong><p>Copy BC bytes from memory pointed by HL into memory pointed by DE.</p>",
-							'comments': [
-              ],
-							'labels': [
-                {'addr': 0x0061, 'label': 'COPYHLDE'}
-              ]
-						},
-						{
-							'type': 'code',	'from': 0x0070, 'to': 0x00e4,
-							'comment': "Common routines",
-							'comments': [
-              ],
-							'labels': []
-						},
-						{
-							'type': 'code',	'from': 0x00e5, 'to': 0x00eb,
-							'comment': "Wait until the processor has finished showing the screen.",
-							'comments': [
-                {'addr': 0x00e5, 'comment': 'Retrieve vertical line display is showing'},
-                {'addr': 0x00e9, 'comment': 'Wait until we are in the V-blank period'},
-              ],
-							'labels': [
-                {'addr': 0x00e5, 'label': 'WAIT_VBLANK'},
-              ]
-						},
-						// block - Cartridge header
-						{
-							'type': 'gameboy_rom_header',
-						},
-						// block - a little code 0x150 - 0x400
-						{
-							'type': 'code',	'from': 0x0150, 'to': 0x0400,
-							'comment': "Main entry point of Demo",
-							'comments': [],
-							'labels': []
-						}
-          ]
-        };
+        });
 
-        // Demo in my Pocket annotations
-        var ohDemoAnnotations = {
-					'programFile': 'Oh!',
-					'description': 'Oh! by Snorpun, http://www.pouet.net/prod.php?which=54175',
-          'blocks': [
-						// block - Code at 0x61
-						{
-							'type': 'code',	'from': 0x0061, 'to': 0x006f,
-              'comment': "<strong>Copy routine</strong><p>Copy BC bytes from memory pointed by HL into memory pointed by DE.</p>",
-							'comments': [
-              ],
-							'labels': [
-                {'addr': 0x0061, 'label': 'COPYHLDE'}
-              ]
-						},
-						{
-							'type': 'code',	'from': 0x0070, 'to': 0x00e4,
-							'comment': "Common routines",
-							'comments': [
-              ],
-							'labels': []
-						},
-						// block - Cartridge header
-						{
-							'type': 'gameboy_rom_header',
-						},
-						// block - a little code 0x150 - 0x400
-						{
-							'type': 'code',	'from': 0x0150, 'to': 0x0400,
-							'comment': "Main entry point of Demo",
-							'comments': [
-                {'addr': 0x3c6, 'comment': 'Copy DMA transfer routine to $fff0'},
-              ],
-							'labels': []
-						},
-						// block - Code @3da4
-						{
-							'type': 'code',	'from': 0x3c7c, 'to': 0x3fd3,
-              'comment': "<strong>End credits</strong><br><p>This is the end credits scrolling routine.</p>",
-							'comments': [
-                {'addr': 0x3d36, 'comment': {'comment': 'Main scrolling loop'}},
-                {'addr': 0x3dae, 'comment': 'Copy DMA transfer routine to $fff0'},
-                {'addr': 0x3da4, 'comment': 'Switch to ROM bank 1'},
-                {'addr': 0x3dae, 'comment': 'Add 2 to x coordinate of all sprites'},
-                {'addr': 0x3e71, 'comment': 'Subtstract 3 to x coordinate bg plane 1'},
-                {'addr': 0x3e7b, 'comment': 'Wait for scan line 0x17'},
-                {'addr': 0x3e82, 'comment': 'Save SCX and SCY in stack'},
-                {'addr': 0x3e89, 'comment': 'Wait for display to complete HBlank (mode 0)'},
-                {'addr': 0x3e8f, 'comment': 'Switch tile map select to $9c00 for credit part'},
-                {'addr': 0x3e93, 'comment': 'Set SCX and SCY for credit window'},
-                {'addr': 0x3eac, 'comment': 'Wait for display to complete HBlank (mode 0)'},
-                {'addr': 0x3ebd, 'comment': 'Wait for display to be on line 0x19'},
-                {'addr': 0x3ed4, 'comment': 'Wait for scan line 0x45 (displays credits section)'},
-                {'addr': 0x3edb, 'comment': 'Wait for display to complete HBlank (mode 0)'},
-                {'addr': 0x3f03, 'comment': 'Wait for display to be on line 0x47'},
-                {'addr': 0x3f03, 'comment': 'Restore into HL the SCX/SCY values for mountain location'},
-                {'addr': 0x3f0f, 'comment': 'Switch tile map select to $9000 for mountain part'},
-                {'addr': 0x3f2b, 'comment': 'Wait for scan line 0x5f (displays credits section)'},
-                {'addr': 0x3f63, 'comment': 'Load music code from bank 3 and play'},
-              ],
-							'labels': []
-						},
-          ],
-          'labels':[
-            {'addr': 0x3d36, 'label':'CREDIT_LOOP'},
-            {'addr': 0xffd1, 'label':{'name': 'BG_X_01', 'help': '0xffd1: X position of bg plane 1'}},
-            {'addr': 0xffd2, 'label':{'name': 'BG_X_02', 'help': '0xffd2: X position of bg plane 2'}},
-            {'addr': 0xffd3, 'label':{'name': 'BG_X_03', 'help': '0xffd3: X position of bg plane 3'}},
-            {'addr': 0xffd8, 'label':{'name': 'CREDIT_Y', 'help': '0xffd8: Y position of credit window1'}},
-            {'addr': 0xff97, 'label':{'name': 'CURBANK', 'help': '0xff97: Stores the currently loaded bank'}},
-            {'addr': 0xfff0, 'label':{'name': 'DMA_TRANSFER', 'help': '0xfff0: transfers address $c900 to OAM via DMA'}}
-          ]
-        };
-
-
-				// Add some better labels.
-				var exampleAnotation = {
-					'programFile': 'Mario & Yoshi.gb',
-					'description': 'Sample annotation',
-					'blocks': [
-						// block 1
-						{
-							'type': 'code',	'from': 0x0100, 'to': 0x014f,
-							'comment': "Cartridge information",
-							'comments': [],
-							'labels': []
-						},
-        		// Cartridge ROM Bank 0 - ($0150 - $3fff)
-						{
-							'type': 'code',	'from': 0x0150, 'to': 0x0440,
-							'comment': "Cartridge ROM - Bank 0 fixed",
-							'comments': [
-								{'addr': 0x0150, 'comment': 'Read joy pad info (see pg 36 of GBCPUman.pdf)'},
-							],
-							'labels': [
-								{'addr': 0x0100, 'label': 'Cartridge header area'},
-							]
-						},
-						{
-							'type': 'code',	'from': 0x0441, 'to': 0x0500,
-							'comment': "Cartridge start code",
-							'comments': [ ],
-							'labels': [ ]
-						},
-        		// Cartridge ROM Switchable Bank 1 - xx ($4000 - $7fff)
-						{
-							'type': 'code',	'from': 0x4000, 'to': 0x4600,
-							'comment': "Cartridge ROM - Switchable Bank - xx",
-							'comments': [
-								//{'addr': 0x0100, 'comment': 'Start of cartridge code'},
-							],
-							'labels': [
-								//{'addr': 0x0100, 'label': 'Cartridge header area'},
-							]
-						},
-
-					]
-				};
-
-				App.addAnnotations(ohDemoAnnotations);
-
-				// render the block
-				App.render(jQuery('#output'));
-
-				// render memory map
-				//App.drawMap(exampleAnotation, '#mmap');
-
-				// bind editable
-				//jQuery('.editable').editable(function(value, settings) {
-				//		 //console.log(this);
-				//		 //console.log(value);
-				//		 //console.log(settings);
-				//		 return(value);
-				//	}, {
-				//		 type    : 'text',
-				//		 submit  : 'OK',
-				// });
-			}
+      });
 	  </script>
   </body>
 </html>

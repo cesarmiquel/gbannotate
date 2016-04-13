@@ -32,12 +32,12 @@ var App = (function (my, $) {
 	}
 	
 	// Add annotation to project
-	my.addAnnotations = function(annotation) {
+	my.loadAnnotation = function(annotation) {
 		for(var i = 0; i < annotation.blocks.length; i++) {
 			var block = annotation.blocks[i];
 			if (block.type == 'code') {
 				// disassemble code and add it
-				var result = my.disassemble(block.from, block.to);
+				var result = my.disassemble(stringToNum(block.from), stringToNum(block.to));
 				result.comment = block.comment || '';
 				my.addBlock(result);
 				
@@ -45,7 +45,7 @@ var App = (function (my, $) {
 				if (block.labels) {
 					for(var j = 0; j < block.labels.length; j++) {
 						var curLabel = block.labels[j];
-						my.addLabel(curLabel.addr, curLabel.label);
+						my.addLabel(stringToNum(curLabel.addr), curLabel.label);
 					}
 				}
 				
@@ -53,7 +53,7 @@ var App = (function (my, $) {
 				if (block.comments) {
 					for(var j = 0; j < block.comments.length; j++) {
 						var curComment = block.comments[j];
-						my.addComment(curComment.addr, curComment.comment);
+						my.addComment(stringToNum(curComment.addr), curComment.comment);
 					}
 				}
 			}
@@ -65,10 +65,23 @@ var App = (function (my, $) {
 
     if (annotation.labels != undefined) {
 		  for(var i = 0; i < annotation.labels.length; i++) {
-        my.addLabel(annotation.labels[i].addr, annotation.labels[i].label);
+        my.addLabel(stringToNum(annotation.labels[i].addr), annotation.labels[i].label);
       }
     }
 	}
+
+  my.loadAnnotationFromUrl = function(url, callback) {
+    jQuery.getJSON(url, function(data) {
+
+      var rom_url = data.rom_url;
+      if (rom_url) {
+        my.loadROMWithUrl(rom_url, function() {
+          my.loadAnnotation(data);
+          callback();
+        });
+      }
+    });
+  }
 
 	my.render = function(element) {
 		var html = '';
@@ -102,7 +115,7 @@ var App = (function (my, $) {
 			'<div class="code-label editable">{{#if line.label}}{{line.label}}{{else}}&nbsp{{/if}}</div>' +
 			'<div class="instr">{{line.instr}}</div>' +
 			'<div class="additional">{{#if line.disas}}{{{line.disas}}}{{else}}&nbsp{{/if}}</div>' +
-			'<div class="comment editable">{{#if line.comment}}; {{{line.comment}}}{{else}}&nbsp{{/if}}</div>' +
+			'<div class="comment editable" data-addr="{{line.addr}}">{{#if line.comment}}; {{{line.comment}}}{{else}}&nbsp{{/if}}</div>' +
 			'</div>';
 
 		Handlebars.registerHelper('getHexAddress', function(val) {
@@ -198,6 +211,10 @@ var App = (function (my, $) {
 		}
 		return html;
 	}
+
+  function stringToNum(s) {
+    return parseInt(s, 16);
+  }
 	
 	return my;
 }(App || {}, jQuery));	
