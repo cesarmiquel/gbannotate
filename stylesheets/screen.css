@@ -8,8 +8,9 @@
 .code-block .code-block-comment {
   padding: 20px;
   margin: 10px 0;
-  color: #c7254e;
-  border-left: 6px solid #c7254e;
+  color: #31708f;
+  background-color: #C5E6F7;
+  border-left: 6px solid #31708f;
   width: 600px;
   float: left;
   clear: both;
@@ -22,7 +23,7 @@
 }
 /* line 31, ../sass/screen.scss */
 .code-block .code-line .address {
-  color: #dd3300;
+  color: #31708f;
   float: left;
   min-width: 50px;
 }
@@ -48,12 +49,12 @@
 /* line 52, ../sass/screen.scss */
 .code-block .code-line .additional {
   float: left;
-  min-width: 90px;
+  min-width: 150px;
 }
 /* line 56, ../sass/screen.scss */
 .code-block .code-line .comment {
-  font-family: "sans-serif";
-  color: #c7254e;
+  font-family: monospace;
+  color: #31708F;
   float: left;
   width: 400px;
   font-size: 14px;

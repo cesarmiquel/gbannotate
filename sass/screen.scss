@@ -7,11 +7,11 @@
 $code-font: 'monospace';
 $code-comment-font: 'sans-serif';
 $code-color: #950;
-$code-address-color: #d30;
+$code-address-color: #31708f;
 $code-opcode-color: #888;
 $code-label-color: #aaa;
 $code-instr-color: #000;
-$code-comment-color: #c7254e;
+$code-comment-color: #31708F;
 
 // code format
 .code-block {
@@ -20,6 +20,7 @@ $code-comment-color: #c7254e;
 		margin: 10px 0;
 		color: $code-comment-color;
 		border-left: 6px solid $code-comment-color;
+    background-color: #C5E6F7;
 		width: 600px;
 		float: left;
 		clear: both;
@@ -51,10 +52,10 @@ $code-comment-color: #c7254e;
 		}
 		.additional {
 			float: left;
-		  min-width: 90px;
+		  min-width: 150px;
 		}
 		.comment {
-			font-family: $code-comment-font;
+			font-family: $code-font;
 			color: $code-comment-color;
 			float: left;
 			width: 400px;
