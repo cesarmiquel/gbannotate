@@ -4,6 +4,13 @@
 	"description": "Oh! by Snorpun, http://www.pouet.net/prod.php?which=54175",
 	"blocks": [
     {
+      "type": "code", "from": "0x0000", "to": "0x0060",
+      "comment": "<strong>Interrupt table</strong>",
+      "comments": [],
+      "labels": []
+    },
+
+    {
       "type": "code", "from": "0x0061", "to": "0x006f",
       "comment": "<strong>Copy routine</strong><p>Copy BC bytes from memory pointed by HL into memory pointed by DE.</p>",
       "comments": [],
@@ -15,8 +22,15 @@
     {
       "type": "code", "from": "0x0070", "to": "0x00e4",
       "comment": "Common routines",
-      "comments": [],
-      "labels": []
+      "comments": [
+        { "addr":"0x8E", "comment": "Clear 0x400 bytes with D register" }
+      ],
+      "labels": [
+        { "addr":"0x70", "label": "COPYTILEMAP" },
+        { "addr":"0x8E", "label": "CLEAR01" },
+        { "addr":"0x9f", "label": "FUNC03" },
+        { "addr":"0xa7", "label": "WAITVBLANK" }
+      ]
     },
     {
       "type": "gameboy_rom_header"
@@ -24,17 +38,32 @@
     {
       "type": "code", "from": "0x0150", "to": "0x0400",
       "comment": "Main entry point of Demo",
-      "comments": [{
-        "addr": "0x3c6",
-        "comment": "Copy DMA transfer routine to $fff0"
-      }],
-      "labels": []
+      "comments": [
+        { "addr": "0x173", "comment": "Copy a JP $0x3FBB to 0xC700" },
+        { "addr": "0x176", "comment": "which is our interrupt handler." },
+        { "addr": "0x180", "comment": "Enable interrupts for LCDC (STAT)" },
+        { "addr": "0x186", "comment": "$3FBB will handle STAT interrupts" },
+        { "addr": "0x3c6", "comment": "Copy DMA transfer routine to $FFF0" }
+      ],
+      "labels": [
+      ]
     },
     {
       "type": "code", "from": "0x3c7c", "to": "0x3fd3",
       "comment": "<strong>End credits</strong><br><p>This is the end credits scrolling routine.</p>",
       "comments": [
-        { "addr": "0x3d36", "comment": { "comment": "Main scrolling loop" } },
+        { "addr": "0x3c7c", "comment": "Configure palettes" },
+        { "addr": "0x3c84", "comment": "Fill TILEMAP2 with tile 0x82" },
+        { "addr": "0x3c8c", "comment": "Load ROM bank 4" },
+        { "addr": "0x3c94", "comment": "Copy Tiledata from $6c00 (rom1) -> Bankdata1" },
+        { "addr": "0x3ca0", "comment": "Copy Tiledata from $69c0 (rom1) -> Bankdata2" },
+        { "addr": "0x3cb7", "comment": "Load ROM bank 1" },
+        { "addr": "0x3cbf", "comment": "Copy Sprite attributes at $6200 (rom1) -> RAM" },
+        { "addr": "0x3d29", "comment": "Copy a JP $0x3F5C to 0xC700" },
+        { "addr": "0x3d2c", "comment": "which is our interrupt handler." },
+        { "addr": "0x3d36", "comment": { "comment": "Update credit variables" } },
+        { "addr": "0x3d60", "comment": "Load ROM bank 4" },
+        { "addr": "0x3f5c", "comment": { "comment": "Interrupt handler during credits" } },
         { "addr": "0x3dae", "comment": "Copy DMA transfer routine to $fff0" },
         { "addr": "0x3da4", "comment": "Switch to ROM bank 1" },
         { "addr": "0x3dae", "comment": "Add 2 to x coordinate of all sprites" },
@@ -54,7 +83,9 @@
         { "addr": "0x3f2b", "comment": "Wait for scan line 0x5f (displays credits section)" },
         { "addr": "0x3f63", "comment": "Load music code from bank 3 and play"}
       ],
-      "labels": []
+      "labels": [
+        { "addr": "0xc900", "label": "SPRITE_LOC" }
+      ]
     }
   ],
 	"labels": [{
