@@ -102,7 +102,7 @@ var App = (function (my, $) {
 			'<div class="code-label editable">{{#if line.label}}{{line.label}}{{else}}&nbsp{{/if}}</div>' +
 			'<div class="instr">{{line.instr}}</div>' +
 			'<div class="additional">{{#if line.disas}}{{{line.disas}}}{{else}}&nbsp{{/if}}</div>' +
-			'<div class="comment editable">{{#if line.comment}}// {{{line.comment}}}{{else}}&nbsp{{/if}}</div>' +
+			'<div class="comment editable">{{#if line.comment}}; {{{line.comment}}}{{else}}&nbsp{{/if}}</div>' +
 			'</div>';
 
 		Handlebars.registerHelper('getHexAddress', function(val) {

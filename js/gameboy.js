@@ -59,6 +59,34 @@ var App = (function (my, $) {
     return addr;
   }
 
+  my.loadROMWithUrl = function(url) {
+    var content, newContent = "";
+
+      $.ajax({
+        dataType: 'text',
+        mimeType: 'text/plain; charset=x-user-defined',
+        url: url,
+        async: false,
+        cache: false,
+        success: function (theContent) {
+          for (var addr = 0; addr < theContent.length; addr++) {
+            my.ROM[addr] = theContent.charCodeAt(addr) & 0xFF;
+          }
+          // Load bank 0 and 1
+          my.loadBank(0);
+          my.loadBank(1);
+
+          my.startAddress = 0;
+          my.endAddr = 0xffff;
+
+          // Load default known labels
+          loadGameboyLabels();
+
+          return addr;
+        }
+    });
+  }
+
   // banknum = 0, 1, 2, 3 ...
   my.loadBank = function(bankNum) {
     var startAddress = bankNum * 0x4000;

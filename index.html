@@ -121,7 +121,8 @@
 	  <script>
 			function doit() {
 
-				App.loadROM(jQuery('#input-program').val(), 0x0000);
+        App.loadROMWithUrl("/roms/oh.gb");
+				//App.loadROM(jQuery('#input-program').val(), 0x0000);
 
         // Demo in my Pocket annotations
         var pocketDemoAnnotations = {
@@ -228,6 +229,7 @@
                 {'addr': 0x3f03, 'comment': 'Restore into HL the SCX/SCY values for mountain location'},
                 {'addr': 0x3f0f, 'comment': 'Switch tile map select to $9000 for mountain part'},
                 {'addr': 0x3f2b, 'comment': 'Wait for scan line 0x5f (displays credits section)'},
+                {'addr': 0x3f63, 'comment': 'Load music code from bank 3 and play'},
               ],
 							'labels': []
 						},
