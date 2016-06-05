@@ -8,63 +8,68 @@
 .code-block .code-block-comment {
   padding: 20px;
   margin: 10px 0;
-  color: #31708f;
+  color: #31708F;
+  border-left: 6px solid #31708F;
   background-color: #C5E6F7;
-  border-left: 6px solid #31708f;
   width: 600px;
   float: left;
   clear: both;
 }
-/* line 27, ../sass/screen.scss */
+/* line 28, ../sass/screen.scss */
 .code-block .code-line {
   font-family: monospace;
   font-size: 13px;
   clear: left;
 }
-/* line 31, ../sass/screen.scss */
+/* line 32, ../sass/screen.scss */
 .code-block .code-line .address {
   color: #31708f;
   float: left;
   min-width: 50px;
 }
-/* line 36, ../sass/screen.scss */
+/* line 37, ../sass/screen.scss */
 .code-block .code-line .opcodes {
-  color: #888888;
+  color: #888;
   float: left;
   min-width: 80px;
 }
-/* line 41, ../sass/screen.scss */
+/* line 42, ../sass/screen.scss */
 .code-block .code-line .code-label {
-  color: #aaaaaa;
+  color: #aaa;
   float: left;
   min-width: 120px;
 }
-/* line 46, ../sass/screen.scss */
+/* line 47, ../sass/screen.scss */
 .code-block .code-line .instr {
   font-weight: bold;
   float: left;
   min-width: 50px;
-  color: black;
+  color: #000;
 }
-/* line 52, ../sass/screen.scss */
+/* line 53, ../sass/screen.scss */
 .code-block .code-line .additional {
   float: left;
   min-width: 150px;
 }
-/* line 56, ../sass/screen.scss */
+/* line 57, ../sass/screen.scss */
 .code-block .code-line .comment {
-  font-family: monospace;
+  font-family: "monospace";
   color: #31708F;
   float: left;
   width: 400px;
   font-size: 14px;
 }
-/* line 65, ../sass/screen.scss */
+/* line 66, ../sass/screen.scss */
 .code-block .code-line:hover div {
   background: #eee;
 }
 
-/* line 71, ../sass/screen.scss */
+/* line 72, ../sass/screen.scss */
 .tooltiptext {
   display: none;
+}
+
+/* line 76, ../sass/screen.scss */
+.colapse-button {
+  cursor: pointer;
 }

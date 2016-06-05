@@ -99,9 +99,10 @@
           App.render(jQuery('#output'));
 
           // hide all code initially
-          //jQuery('.code-line').hide();
+          jQuery('.code-line').hide();
 
-          jQuery('.colapse-button').click( function() {
+          jQuery('.colapse-button').click( function(e) {
+            e.stopPropagation();
             jQuery(this).parents('.code-block').find('.code-line').toggle();
           });
 
