@@ -6,7 +6,13 @@
     {
       "type": "code", "from": "0x0000", "to": "0x0060",
       "comment": "<strong>Interrupt table</strong>",
-      "comments": [],
+      "comments": [
+        { "addr":"0x40", "comment": "v-blank interrupt handler" },
+        { "addr":"0x48", "comment": "LCD status interrupt handler" },
+        { "addr":"0x50", "comment": "Timer interrupt handler" },
+        { "addr":"0x58", "comment": "Serial interrupt handler" },
+        { "addr":"0x60", "comment": "Joystick interrupt handler" }
+      ],
       "labels": []
     },
 
@@ -39,6 +45,9 @@
       "type": "code", "from": "0x0150", "to": "0x0400",
       "comment": "Main entry point of Demo",
       "comments": [
+        { "addr": "0x15b", "comment": "Switch to bank 3" },
+        { "addr": "0x160", "comment": "Initialize audio code?" },
+        { "addr": "0x16b", "comment": "Switch to bank 1 and save to CURBANK" },
         { "addr": "0x173", "comment": "Copy a JP $0x3FBB to 0xC700" },
         { "addr": "0x176", "comment": "which is our interrupt handler." },
         { "addr": "0x180", "comment": "Enable interrupts for LCDC (STAT)" },
@@ -63,7 +72,7 @@
         { "addr": "0x3d2c", "comment": "which is our interrupt handler." },
         { "addr": "0x3d36", "comment": { "comment": "Update credit variables" } },
         { "addr": "0x3d60", "comment": "Load ROM bank 4" },
-        { "addr": "0x3f5c", "comment": { "comment": "Interrupt handler during credits" } },
+        { "addr": "0x3f5c", "comment": { "comment": "V-Blank handler during credits" } },
         { "addr": "0x3dae", "comment": "Copy DMA transfer routine to $fff0" },
         { "addr": "0x3da4", "comment": "Switch to ROM bank 1" },
         { "addr": "0x3dae", "comment": "Add 2 to x coordinate of all sprites" },
@@ -81,7 +90,12 @@
         { "addr": "0x3f03", "comment": "Restore into HL the SCX/SCY values for mountain location" },
         { "addr": "0x3f0f", "comment": "Switch tile map select to $9000 for mountain part" },
         { "addr": "0x3f2b", "comment": "Wait for scan line 0x5f (displays credits section)" },
-        { "addr": "0x3f63", "comment": "Load music code from bank 3 and play"}
+        { "addr": "0x3f63", "comment": "Load music code from bank 3 and play"},
+        { "addr": "0x3fbb", "comment": { "comment": "Global V-Blank handler"} },
+        { "addr": "0x3fbc", "comment": "Save value of all registers in stack"},
+        { "addr": "0x3fbf", "comment": "Switch to bank 3"},
+        { "addr": "0x3fc4", "comment": "Call audio play code?"},
+        { "addr": "0x3fcd", "comment": "Restore all registers from stack and return"}
       ],
       "labels": [
         { "addr": "0xc900", "label": "SPRITE_LOC" }
